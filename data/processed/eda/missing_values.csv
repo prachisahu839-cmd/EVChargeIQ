@@ -1,0 +1,13 @@
+,0
+WhPerMile,5100
+kWhRequested,5100
+milesRequested,5100
+minutesAvailable,5100
+requestedDeparture,5100
+paymentRequired,5100
+userID,5072
+userInputs,5072
+energy_per_charging_min,3
+doneChargingTime,1
+postDisconnectDuration_min,1
+chargingDuration_min,1

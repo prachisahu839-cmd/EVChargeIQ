@@ -1,0 +1,26 @@
+EVChargeIQ - Forecasting Dataset Summary
+============================================================
+
+Original sessions: 5100
+Hourly rows before feature removal: 2055
+Final forecasting rows: 1886
+Time range: 2018-04-25 04:00:00-07:00 to 2018-07-19 18:00:00-07:00
+Number of stations: 53
+Average hourly sessions: 2.48
+Average hourly energy: 22.42 kWh
+
+Target variables:
+- target_sessions_next_hour
+- target_energy_next_hour
+
+Important lag features:
+- lag 1 hour
+- lag 24 hours
+- lag 168 hours (7 days)
+
+Rolling features:
+- previous 24-hour mean
+- previous 168-hour mean
+- previous 24-hour standard deviation
+
+No current-target leakage is intentionally introduced.
