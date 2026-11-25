@@ -17,13 +17,57 @@ PROCESSED_DIR = DATA_DIR / "processed"
 REPORTS_DIR = ROOT / "reports"
 
 st.set_page_config(
-    page_title="EVChargeIQ",
+    page_title="EVChargeIQ | EV Charging Intelligence",
     page_icon="⚡",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
-st.title("⚡ EVChargeIQ")
-st.caption("AI-Driven EV Charging Analytics and Decision Support System")
+# Professional dark interface. All visual styling is local to this app.
+st.markdown(
+    """
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+      :root { --ev-bg:#07111f; --ev-panel:#0e1b2d; --ev-panel2:#12243a; --ev-cyan:#27d7e8; --ev-blue:#4388ff; --ev-text:#eaf2ff; --ev-muted:#9eb0c8; }
+      html, body, [data-testid="stAppViewContainer"] { background:var(--ev-bg); color:var(--ev-text); font-family:'DM Sans',sans-serif; }
+      [data-testid="stHeader"] { background:rgba(7,17,31,.88); }
+      [data-testid="stSidebar"] { background:linear-gradient(180deg,#0c1b2e 0%,#091523 100%); border-right:1px solid rgba(125,170,220,.15); }
+      [data-testid="stSidebar"] * { font-family:'DM Sans',sans-serif; }
+      h1,h2,h3 { font-family:'Space Grotesk',sans-serif !important; color:#f3f8ff !important; letter-spacing:-.02em; }
+      h1 { font-size:2.25rem !important; }
+      h2 { font-size:1.55rem !important; }
+      h3 { font-size:1.12rem !important; }
+      p, label, li, [data-testid="stMarkdownContainer"] { color:#d7e4f5; }
+      [data-testid="stCaptionContainer"] { color:var(--ev-muted); }
+      [data-testid="stMetric"] { background:linear-gradient(145deg,#11243a,#0d1b2d); border:1px solid rgba(87,160,220,.22); padding:17px 18px; border-radius:15px; box-shadow:0 8px 24px rgba(0,0,0,.14); }
+      [data-testid="stMetricLabel"] { color:#a9bdd5 !important; }
+      [data-testid="stMetricValue"] { color:#f5fbff !important; font-family:'Space Grotesk',sans-serif; }
+      [data-testid="stMetricDelta"] { color:#65dfc0 !important; }
+      [data-testid="stDataFrame"], [data-testid="stTable"] { border:1px solid rgba(125,170,220,.18); border-radius:12px; overflow:hidden; }
+      [data-testid="stExpander"] { background:#0d1b2d; border:1px solid rgba(125,170,220,.18); border-radius:12px; }
+      [data-testid="stAlert"] { border-radius:12px; }
+      .stButton>button, .stDownloadButton>button { border-radius:10px; border:1px solid rgba(39,215,232,.45); background:linear-gradient(100deg,#146a91,#2459a5); color:white; font-weight:600; }
+      .stButton>button:hover, .stDownloadButton>button:hover { border-color:#27d7e8; color:white; background:linear-gradient(100deg,#1785a8,#326fd0); }
+      [data-testid="stRadio"] label, [data-testid="stSelectbox"] label { color:#c9d8eb !important; }
+      hr { border-color:rgba(125,170,220,.18) !important; }
+      .ev-hero { padding:24px 26px; border:1px solid rgba(39,215,232,.24); border-radius:18px; background:radial-gradient(circle at 85% 10%,rgba(39,215,232,.16),transparent 32%),linear-gradient(120deg,#10263d,#0b192b 70%); margin:4px 0 22px 0; }
+      .ev-kicker { color:#55ddec; font-size:.78rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; margin-bottom:7px; }
+      .ev-hero-title { color:#f5fbff; font-family:'Space Grotesk',sans-serif; font-size:2.25rem; font-weight:700; line-height:1.1; }
+      .ev-hero-sub { color:#afc3dc; font-size:1rem; margin-top:9px; }
+      .ev-chip { display:inline-block; padding:5px 10px; border-radius:99px; background:rgba(39,215,232,.11); border:1px solid rgba(39,215,232,.25); color:#8debf3; font-size:.78rem; margin:8px 6px 0 0; }
+      .ev-note { padding:14px 16px; border-radius:12px; background:#0d2033; border-left:3px solid #27d7e8; color:#c8d9ec; }
+    </style>
+    <div class="ev-hero">
+      <div class="ev-kicker">EV charging intelligence platform</div>
+      <div class="ev-hero-title">⚡ EVChargeIQ</div>
+      <div class="ev-hero-sub">AI-Driven EV Charging Analytics and Demand Forecasting</div>
+      <span class="ev-chip">Historical ACN datasets</span>
+      <span class="ev-chip">Caltech + JPL</span>
+      <span class="ev-chip">ML · Deep Learning · Analytics</span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # --------------------------------------------------
@@ -169,12 +213,16 @@ page = st.sidebar.radio(
         "Dataset Analytics",
         "Model Comparison",
         "Forecasting Demo",
+        "Cross-Site Validation",
+        "Prediction Analysis",
         "Project Status",
     ],
 )
 
 st.sidebar.divider()
-st.sidebar.caption("EVChargeIQ | Research Prototype")
+st.sidebar.markdown("**⚡ EVChargeIQ**")
+st.sidebar.caption("AI charging analytics · Research prototype")
+st.sidebar.caption("Data scope: ACN Caltech + JPL")
 
 
 # --------------------------------------------------
@@ -184,63 +232,65 @@ st.sidebar.caption("EVChargeIQ | Research Prototype")
 if page == "Project Overview":
 
     st.header("Project Overview")
-
-    st.write(
-        """
-        EVChargeIQ is an AI-driven EV charging analytics and
-        decision-support prototype. It uses historical EV charging
-        sessions to analyze demand and evaluate forecasting models.
-        """
-    )
-
-    caltech_path = RAW_DIR / "caltech_sessions.json"
-    jpl_path = RAW_DIR / "jpl_sessions.json"
-
-    caltech_records = read_json_safe(caltech_path)
-    jpl_records = read_json_safe(jpl_path)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric("Caltech Sessions", f"{len(caltech_records):,}")
-
-    with col2:
-        st.metric("JPL Sessions", f"{len(jpl_records):,}")
-
-    with col3:
-        st.metric(
-            "Total Raw Sessions",
-            f"{len(caltech_records) + len(jpl_records):,}",
-        )
-
-    st.subheader("Project Objectives")
-
     st.markdown(
-        """
-        - Analyze historical EV charging-session data.
-        - Clean and preprocess charging records.
-        - Explore hourly charging demand and energy usage.
-        - Train and compare machine-learning and time-series models.
-        - Demonstrate actual-versus-predicted demand.
-        - Provide insights that can support charging-planning decisions.
-        """
+        "EVChargeIQ analyzes historical electric-vehicle charging sessions and "
+        "uses forecasting models to study near-term charging demand. The current "
+        "prototype is built on ACN-Data from Caltech and JPL."
     )
 
-    st.subheader("System Workflow")
+    caltech_records = read_json_safe(RAW_DIR / "caltech_sessions.json")
+    jpl_records = read_json_safe(RAW_DIR / "jpl_sessions.json")
+    hourly = read_csv_safe(PROCESSED_DIR / "forecasting" / "hourly_forecasting_dataset.csv")
+    comparison = load_model_comparison()
 
-    st.markdown(
-        """
-        **Data Collection** → **Data Cleaning** → **Exploratory Analysis**
-        → **Feature Engineering** → **Forecasting Models**
-        → **Model Evaluation** → **Dashboard**
-        """
-    )
+    total_sessions = len(caltech_records) + len(jpl_records)
+    total_models = int(comparison["Model"].nunique()) if not comparison.empty and "Model" in comparison.columns else 0
+    forecast_rows = len(hourly)
 
-    st.info(
-        "This is a research prototype based on historical datasets. "
-        "It does not currently monitor or control live charging stations."
-    )
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Caltech sessions", f"{len(caltech_records):,}")
+    k2.metric("JPL sessions", f"{len(jpl_records):,}")
+    k3.metric("Hourly records", f"{forecast_rows:,}")
+    k4.metric("Models evaluated", f"{total_models:,}")
 
+    st.subheader("Project at a glance")
+    left, right = st.columns([1.15, 1])
+    with left:
+        st.markdown("""
+        **What EVChargeIQ does**
+        - Explores historical EV charging-session patterns.
+        - Prepares hourly demand features and next-hour targets.
+        - Compares machine-learning, deep-learning and statistical models.
+        - Evaluates transfer from Caltech training data to JPL test data.
+        - Presents saved predictions and evaluation results in an interactive dashboard.
+        """)
+    with right:
+        st.markdown("""
+        <div class="ev-note">
+          <b>Current project scope</b><br/>
+          ACN-Data (Caltech + JPL) is the dataset used for this submission. Live
+          Indian charging-station feeds and real-time charger availability are
+          not part of the current implementation; BEE integration is future work.
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.subheader("End-to-end workflow")
+    workflow = st.columns(6)
+    steps = ["Data collection", "Cleaning", "EDA", "Features", "Forecasting", "Evaluation"]
+    for col, label in zip(workflow, steps):
+        with col:
+            st.markdown(
+                f"<div style='min-height:76px;padding:13px 9px;text-align:center;border:1px solid rgba(39,215,232,.25);border-radius:12px;background:#10243a;color:#dff8ff;font-weight:600'>{label}</div>",
+                unsafe_allow_html=True,
+            )
+
+    st.subheader("Project objectives")
+    obj1, obj2, obj3 = st.columns(3)
+    obj1.markdown("**01 · Understand demand**\n\nAnalyze session counts, energy proxies, time patterns and site activity.")
+    obj2.markdown("**02 · Forecast demand**\n\nCompare next-hour session and session-associated energy forecasts.")
+    obj3.markdown("**03 · Evaluate transfer**\n\nTest how Caltech-trained patterns perform on separate JPL data.")
+
+    st.caption("Research prototype · Historical-data analysis only · No live station monitoring or control")
 
 # --------------------------------------------------
 # 5. DATASET ANALYTICS
@@ -272,7 +322,7 @@ elif page == "Dataset Analytics":
             st.metric("Number of Records", f"{len(data):,}")
 
             st.write("Dataset preview")
-            st.dataframe(data.head(100), use_container_width=True)
+            st.dataframe(data.head(100), width="stretch")
 
             st.write("Columns")
             st.write(list(data.columns))
@@ -310,7 +360,7 @@ elif page == "Dataset Analytics":
             st.metric("Number of Records", f"{len(data):,}")
 
             st.write("Dataset preview")
-            st.dataframe(data.head(100), use_container_width=True)
+            st.dataframe(data.head(100), width="stretch")
 
             st.write("Columns")
             st.write(list(data.columns))
@@ -363,7 +413,7 @@ elif page == "Dataset Analytics":
                 col1.metric("Rows", f"{len(data):,}")
                 col2.metric("Columns", f"{len(data.columns):,}")
 
-                st.dataframe(data.head(200), use_container_width=True)
+                st.dataframe(data.head(200), width="stretch")
 
                 numeric_columns = list(
                     data.select_dtypes(include="number").columns
@@ -394,86 +444,72 @@ elif page == "Dataset Analytics":
 elif page == "Model Comparison":
 
     st.header("Model Comparison")
+    st.write("Compare saved evaluation results. Metrics are separated by target so that session and energy errors are not mixed.")
 
     comparison = load_model_comparison()
-
     if comparison.empty:
-        st.warning(
-            "Model comparison file was not found or contains no data."
-        )
-        st.write(
-            "Expected file: reports/forecasting_model_comparison.csv"
-        )
-
+        st.warning("Model comparison file was not found or contains no data.")
+        st.code("reports/forecasting_model_comparison.csv")
     else:
-        st.subheader("Saved Model Evaluation Results")
-        st.dataframe(comparison, use_container_width=True)
+        required = {"Target", "Model", "MAE", "RMSE"}
+        if not required.issubset(comparison.columns):
+            st.warning("The comparison CSV does not contain the expected Target, Model, MAE and RMSE columns.")
+            st.dataframe(comparison, width="stretch", hide_index=True)
+        else:
+            comparison = comparison.copy()
+            comparison["MAE"] = pd.to_numeric(comparison["MAE"], errors="coerce")
+            comparison["RMSE"] = pd.to_numeric(comparison["RMSE"], errors="coerce")
+            target_labels = {
+                "target_sessions_next_hour": "Next-hour sessions",
+                "target_energy_next_hour": "Next-hour energy proxy (kWh)",
+            }
+            comparison["Target display"] = comparison["Target"].map(target_labels).fillna(comparison["Target"].astype(str))
+            selected_target = st.selectbox("Forecast target", sorted(comparison["Target display"].dropna().unique()))
+            view = comparison[comparison["Target display"] == selected_target].copy()
+            view = view.sort_values("MAE", ascending=True, na_position="last")
 
-        st.download_button(
-            "Download model comparison",
-            data=comparison.to_csv(index=False).encode("utf-8"),
-            file_name="forecasting_model_comparison.csv",
-            mime="text/csv",
-        )
+            best = view.dropna(subset=["MAE"]).head(1)
+            if not best.empty:
+                best_row = best.iloc[0]
+                a, b, c = st.columns(3)
+                a.metric("Lowest MAE model", str(best_row["Model"]))
+                b.metric("Best MAE", format_number(best_row["MAE"]))
+                c.metric("Best RMSE", format_number(view["RMSE"].min()))
 
-        # Automatically identify likely metric columns.
-        metric_candidates = [
-            column
-            for column in comparison.columns
-            if any(
-                metric in column.lower()
-                for metric in ["mae", "rmse", "wape", "smape"]
-            )
-        ]
+            chart_col1, chart_col2 = st.columns(2)
+            with chart_col1:
+                st.subheader("MAE by model")
+                mae_chart = view.dropna(subset=["MAE"]).set_index("Model")[["MAE"]]
+                if not mae_chart.empty:
+                    st.bar_chart(mae_chart)
+            with chart_col2:
+                st.subheader("RMSE by model")
+                rmse_chart = view.dropna(subset=["RMSE"]).set_index("Model")[["RMSE"]]
+                if not rmse_chart.empty:
+                    st.bar_chart(rmse_chart)
 
-        if metric_candidates:
-            selected_metric = st.selectbox(
-                "Select metric to visualize",
-                metric_candidates,
-            )
+            display_cols = [c for c in ["Model", "Model_Type", "MAE", "RMSE", "WAPE_percent", "sMAPE_percent", "Baseline_MAE", "Improvement_over_168h_percent"] if c in view.columns]
+            st.subheader("Saved evaluation results")
+            st.dataframe(view[display_cols], width="stretch", hide_index=True)
+            st.download_button("Download filtered comparison", data=view.to_csv(index=False).encode("utf-8"), file_name="evchargeiq_model_comparison.csv", mime="text/csv")
 
-            chart_data = comparison.copy()
-            chart_data[selected_metric] = pd.to_numeric(
-                chart_data[selected_metric], errors="coerce"
-            )
+            st.markdown("""
+            <div class="ev-note"><b>How to interpret:</b> Lower MAE and RMSE indicate smaller errors for the same target. WAPE and sMAPE can become large when many actual hourly values are zero or close to zero. Improvement over the 168-hour seasonal baseline is based on MAE; it is not an accuracy percentage.</div>
+            """, unsafe_allow_html=True)
 
-            chart_data = chart_data.dropna(subset=[selected_metric])
-
-            if not chart_data.empty:
-                possible_labels = [
-                    column
-                    for column in chart_data.columns
-                    if column != selected_metric
-                    and not pd.api.types.is_numeric_dtype(
-                        chart_data[column]
-                    )
-                ]
-
-                if possible_labels:
-                    label_column = st.selectbox(
-                        "Select model/target label",
-                        possible_labels,
-                    )
-
-                    chart_data = chart_data.set_index(label_column)
-                    st.bar_chart(chart_data[selected_metric])
-
-        st.caption(
-            "Lower MAE and RMSE generally indicate smaller prediction errors. "
-            "Compare metrics for the same forecasting target."
-        )
-
-    st.subheader("Saved Evaluation Plots")
-
+    st.subheader("Saved evaluation plots")
     plot_files = [
-        REPORTS_DIR / "forecasting_sessions_mae_comparison.png",
-        REPORTS_DIR / "forecasting_energy_mae_comparison.png",
+        REPORTS_DIR / "figures" / "next_hour_sessions_mae_comparison.png",
+        REPORTS_DIR / "figures" / "next_hour_energy_mae_comparison.png",
     ]
-
-    for plot_path in plot_files:
-        if plot_path.exists():
-            st.image(str(plot_path), caption=plot_path.name)
-
+    available_plots = [p for p in plot_files if p.exists()]
+    if available_plots:
+        cols = st.columns(len(available_plots))
+        for col, plot_path in zip(cols, available_plots):
+            with col:
+                st.image(str(plot_path), caption=plot_path.name, width="stretch")
+    else:
+        st.caption("No standalone comparison plots were found; the interactive charts above use the saved metrics CSV.")
 
 # --------------------------------------------------
 # 7. FORECASTING DEMO
@@ -496,7 +532,7 @@ elif page == "Forecasting Demo":
     with col1:
         target = st.selectbox(
             "Forecast target",
-            ["Sessions", "Energy (kWh)"],
+            ["Sessions", "Energy proxy (kWh)"],
         )
 
     with col2:
@@ -511,6 +547,9 @@ elif page == "Forecasting Demo":
                 "Prophet",
             ],
         )
+
+    if target != "Sessions":
+        st.caption("Energy values represent session-associated energy grouped by connection hour. They are not metered electricity consumed strictly within each clock hour.")
 
     target_key = (
         "target_sessions_next_hour"
@@ -585,7 +624,7 @@ elif page == "Forecasting Demo":
                 )
 
             with st.expander("View prediction records"):
-                st.dataframe(data, use_container_width=True)
+                st.dataframe(data, width="stretch")
 
                 st.download_button(
                     "Download these predictions",
@@ -603,7 +642,168 @@ elif page == "Forecasting Demo":
 
 
 # --------------------------------------------------
-# 8. PROJECT STATUS
+# 8. CROSS-SITE VALIDATION
+# --------------------------------------------------
+
+elif page == "Cross-Site Validation":
+
+    st.header("Cross-Site Validation")
+    st.write("A Random Forest model trained on Caltech data was evaluated on JPL data. This experiment assesses cross-site transfer; it does not establish production readiness.")
+
+    metrics = read_csv_safe(REPORTS_DIR / "cross_site_validation_metrics.csv")
+    baselines = read_csv_safe(REPORTS_DIR / "jpl_baseline_comparison_metrics.csv")
+    predictions = read_csv_safe(REPORTS_DIR / "cross_site_validation_predictions.csv")
+
+    if not metrics.empty:
+        st.subheader("Caltech-trained model evaluated on JPL")
+        st.dataframe(metrics, width="stretch", hide_index=True)
+        if "Test_Rows" in metrics.columns:
+            st.caption(f"Evaluation observations: {int(pd.to_numeric(metrics['Test_Rows'], errors='coerce').max()):,} hourly rows.")
+    else:
+        st.warning("Cross-site metrics not found. Expected reports/cross_site_validation_metrics.csv.")
+
+    if not baselines.empty:
+        st.subheader("JPL: model versus simple baselines")
+        st.dataframe(baselines, width="stretch", hide_index=True)
+        st.markdown("""
+        <div class="ev-note"><b>Important result:</b> On the JPL evaluation set, the previous-week seasonal baseline has lower MAE than the Caltech-trained Random Forest for both next-hour sessions and next-hour energy proxy. This means the current Random Forest does not outperform that simple baseline on JPL. Report this as a limitation and an opportunity for future site-specific calibration.</div>
+        """, unsafe_allow_html=True)
+    else:
+        st.info("JPL baseline comparison metrics were not found. Expected reports/jpl_baseline_comparison_metrics.csv.")
+
+    if not predictions.empty:
+        st.subheader("JPL actual versus predicted")
+        lower_columns = {str(c).strip().lower(): c for c in predictions.columns}
+        target_col = lower_columns.get("target")
+        actual_col = lower_columns.get("actual")
+        predicted_col = lower_columns.get("predicted")
+        hour_col = lower_columns.get("hour")
+        if target_col and actual_col and predicted_col:
+            target_values = predictions[target_col].astype(str).unique().tolist()
+            selected_target = st.selectbox("Select validation target", target_values, key="cross_site_target")
+            view = predictions[predictions[target_col].astype(str) == selected_target].copy()
+            view[actual_col] = pd.to_numeric(view[actual_col], errors="coerce")
+            view[predicted_col] = pd.to_numeric(view[predicted_col], errors="coerce")
+            view = view.dropna(subset=[actual_col, predicted_col])
+            if not view.empty:
+                chart = view[[actual_col, predicted_col]].copy()
+                chart.columns = ["Actual", "Random Forest prediction"]
+                if hour_col:
+                    chart.index = view[hour_col].astype(str)
+                    chart.index.name = "Hour"
+                else:
+                    chart.index = range(len(chart))
+                    chart.index.name = "Observation"
+                st.line_chart(chart)
+                st.metric("Prediction rows", f"{len(view):,}")
+                with st.expander("View prediction records"):
+                    st.dataframe(view, width="stretch")
+                st.download_button("Download cross-site predictions", data=view.to_csv(index=False).encode("utf-8"), file_name="cross_site_validation_predictions.csv", mime="text/csv")
+        else:
+            st.warning("Prediction CSV columns were not recognized. Expected hour, target, actual and predicted.")
+    else:
+        st.info("Cross-site prediction records were not found.")
+
+    st.caption("The reported JPL test uses JPL lag-history features. It is a cross-site evaluation, not a completely history-free zero-shot deployment test. Energy values are session-associated connection-hour energy proxies, not metered electricity consumption in each clock hour.")
+
+# --------------------------------------------------
+# 9. PREDICTION ANALYSIS
+# --------------------------------------------------
+
+elif page == "Prediction Analysis":
+
+    st.header("Prediction Analysis & Visualizations")
+
+    st.write(
+        """
+        View the graphs generated from the JPL baseline comparison.
+        These plots compare the cross-site Random Forest predictions
+        with actual values and simple historical baselines.
+        """
+    )
+
+    figure_dir = REPORTS_DIR / "figures"
+
+    plot_groups = [
+        (
+            "Next-hour sessions",
+            [
+                "next_hour_sessions_actual_vs_predicted.png",
+                "next_hour_sessions_scatter.png",
+                "next_hour_sessions_mae_comparison.png",
+            ],
+        ),
+        (
+            "Next-hour energy",
+            [
+                "next_hour_energy_actual_vs_predicted.png",
+                "next_hour_energy_scatter.png",
+                "next_hour_energy_mae_comparison.png",
+            ],
+        ),
+    ]
+
+    found_any_plot = False
+
+    for group_title, filenames in plot_groups:
+        existing = [
+            figure_dir / filename
+            for filename in filenames
+            if (figure_dir / filename).exists()
+        ]
+
+        if existing:
+            found_any_plot = True
+            st.subheader(group_title)
+            for plot_path in existing:
+                st.image(str(plot_path), caption=plot_path.name, width="stretch")
+
+    if not found_any_plot:
+        st.warning(
+            "No prediction-analysis plots were found in reports/figures. "
+            "Run the visualization script first."
+        )
+        st.code("python scripts/prediction_visualization.py")
+
+    baseline_metrics_path = (
+        REPORTS_DIR / "jpl_baseline_comparison_metrics.csv"
+    )
+    baseline_predictions_path = (
+        REPORTS_DIR / "jpl_baseline_comparison_predictions.csv"
+    )
+
+    baseline_metrics = read_csv_safe(baseline_metrics_path)
+    if not baseline_metrics.empty:
+        st.subheader("JPL Baseline Comparison Metrics")
+        st.dataframe(
+            baseline_metrics,
+            width="stretch",
+            hide_index=True,
+        )
+        st.download_button(
+            "Download JPL baseline metrics",
+            data=baseline_metrics.to_csv(index=False).encode("utf-8"),
+            file_name="jpl_baseline_comparison_metrics.csv",
+            mime="text/csv",
+        )
+
+    baseline_predictions = read_csv_safe(baseline_predictions_path)
+    if not baseline_predictions.empty:
+        with st.expander("View JPL baseline comparison records"):
+            st.dataframe(
+                baseline_predictions,
+                width="stretch",
+            )
+            st.download_button(
+                "Download JPL baseline predictions",
+                data=baseline_predictions.to_csv(index=False).encode("utf-8"),
+                file_name="jpl_baseline_comparison_predictions.csv",
+                mime="text/csv",
+            )
+
+
+# --------------------------------------------------
+# 10. PROJECT STATUS
 # --------------------------------------------------
 
 elif page == "Project Status":
@@ -624,8 +824,10 @@ elif page == "Project Status":
         ("Prophet forecasting", "Completed"),
         ("Model comparison reports", "Available if report files exist"),
         ("Streamlit dashboard", "Prototype"),
-        ("Live charging-station integration", "Not implemented"),
-        ("Cross-site model validation", "Further work required"),
+        ("Live BEE charging-station integration", "Future scope — not included in this submission"),
+        ("Cross-site model validation (Caltech → JPL)", "Completed — metrics saved"),
+        ("JPL baseline comparison", "Completed — metrics and predictions saved"),
+        ("Prediction visualization", "Completed — plots saved in reports/figures"),
     ]
 
     status_df = pd.DataFrame(
@@ -633,7 +835,7 @@ elif page == "Project Status":
         columns=["Component", "Status"],
     )
 
-    st.dataframe(status_df, use_container_width=True, hide_index=True)
+    st.dataframe(status_df, width="stretch", hide_index=True)
 
     st.subheader("Project Limitations")
 
@@ -643,9 +845,10 @@ elif page == "Project Status":
         - Current saved forecasting results use the Caltech test period.
         - JPL data has been collected and preprocessed, but this does not
           establish that the models generalize to JPL.
-        - The dashboard does not receive live charging-station telemetry.
-        - Forecasts support analysis and decision-making; they are not
-          guaranteed to represent future demand exactly.
+        - The dashboard does not receive live charging-station telemetry or charger-availability updates.
+        - Caltech-trained Random Forest results are weaker than the previous-week baseline on JPL for both evaluated targets.
+        - Energy is a session-associated connection-hour proxy, not metered hourly electricity consumption.
+        - Forecasts support historical analysis and planning research; they are not guaranteed to represent future demand exactly.
         """
     )
 
@@ -656,11 +859,11 @@ elif page == "Project Status":
 
 
 # --------------------------------------------------
-# 9. FOOTER
+# 11. FOOTER
 # --------------------------------------------------
 
 st.divider()
 
 st.caption(
-    "EVChargeIQ | AI-Driven EV Charging Analytics and Decision Support System"
+    "EVChargeIQ | ACN historical-data research prototype | Caltech + JPL"
 )

@@ -1,0 +1,14 @@
+# Optional dependencies for rerunning data processing and ML/DL experiments.
+# Install only if you need to rerun training scripts; this is not needed
+# merely to launch the existing dashboard and saved reports.
+-r requirements.txt
+numpy>=1.26,<3
+matplotlib>=3.8
+scikit-learn>=1.4
+xgboost>=2
+lightgbm>=4
+tensorflow>=2.16
+prophet>=1.1
+acnportal
+python-dotenv
+requests

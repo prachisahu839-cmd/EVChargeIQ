@@ -179,12 +179,9 @@ def run_prophet(
         changepoint_prior_scale=0.05
     )
 
-    # Explicit hourly seasonality
-    model.add_seasonality(
-        name="hourly",
-        period=1,
-        fourier_order=8
-    )
+    # Prophet's built-in daily seasonality already models the
+    # 24-hour pattern for hourly observations. Avoid adding a second
+    # period=1 day component under another name.
 
     print("Training Prophet...")
 

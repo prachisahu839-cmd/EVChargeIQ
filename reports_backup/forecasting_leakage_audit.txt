@@ -1,0 +1,13 @@
+EVChargeIQ - Forecasting Leakage Audit
+============================================================
+Rows: 1886
+Columns: 30
+Chronologically sorted: True
+Duplicate hours: 0
+Training rows: 1508
+Testing rows: 378
+Training end: 2018-07-03 23:00:00-07:00
+Testing start: 2018-07-04 00:00:00-07:00
+Detected gaps: 0
+
+No obvious structural leakage detected.

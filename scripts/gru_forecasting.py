@@ -179,12 +179,14 @@ def create_sequences(X, y, sequence_length):
     X_sequences = []
     y_sequences = []
 
-    for i in range(sequence_length, len(X)):
+    # Include the feature row at the forecast origin.
+    # The target at row i is demand in the following hour.
+    for end in range(sequence_length, len(X) + 1):
         X_sequences.append(
-            X[i - sequence_length:i]
+            X[end - sequence_length:end]
         )
 
-        y_sequences.append(y[i])
+        y_sequences.append(y[end - 1])
 
     return np.array(X_sequences), np.array(y_sequences)
 
@@ -217,12 +219,12 @@ def train_gru(target_name, target_column):
     # --------------------------------------------------------
 
     X_test_combined = np.vstack([
-        X_train_scaled[-SEQUENCE_LENGTH:],
+        X_train_scaled[-(SEQUENCE_LENGTH - 1):],
         X_test_scaled
     ])
 
     y_test_combined = np.concatenate([
-        y_train[-SEQUENCE_LENGTH:],
+        y_train[-(SEQUENCE_LENGTH - 1):],
         y_test
     ])
 

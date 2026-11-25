@@ -1,5 +1,14 @@
-@"
+# Secrets
 .env
+.streamlit/secrets.toml
+
+# Python cache and virtual environments
 __pycache__/
-*.pyc
-"@ | Set-Content .gitignore
+*.py[cod]
+.venv/
+venv/
+
+# Local editor / OS files
+.vscode/
+.DS_Store
+Thumbs.db

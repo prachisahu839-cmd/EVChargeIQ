@@ -1,19 +1,19 @@
-Model,Target,MAE,RMSE,WAPE_percent,sMAPE_percent,Model_Type,Baseline_MAE,Improvement_over_168h_percent
-LightGBM,target_energy_next_hour,13.3963,20.2387,53.7289,102.5518,Machine Learning,21.5839,37.93
-Random Forest,target_energy_next_hour,13.4421,19.8707,53.9124,97.7179,Machine Learning,21.5839,37.72
-XGBoost,target_energy_next_hour,13.9651,19.9024,56.01,98.8741,Machine Learning,21.5839,35.3
-LSTM,target_energy_next_hour,15.2961,22.4699,61.3484,99.0264,Deep Learning,21.5839,29.13
-Prophet,target_energy_next_hour,16.4014,24.2255,65.7812,98.0332,Statistical,21.5839,24.01
-GRU,target_energy_next_hour,16.7972,24.3767,67.369,103.4687,Deep Learning,21.5839,22.18
-Seasonal 168h,target_energy_next_hour,21.5839,33.5674,,,Baseline,21.5839,0.0
-Naive,target_energy_next_hour,22.1165,34.933,,,Baseline,21.5839,-2.47
-Seasonal 24h,target_energy_next_hour,22.4323,35.4259,,,Baseline,21.5839,-3.93
-Random Forest,target_sessions_next_hour,1.2415,1.8406,45.3432,88.9914,Machine Learning,1.965608,36.84
-XGBoost,target_sessions_next_hour,1.2583,1.8234,45.9554,89.5102,Machine Learning,1.965608,35.98
-LightGBM,target_sessions_next_hour,1.2974,1.9831,47.3831,95.0468,Machine Learning,1.965608,34.0
-GRU,target_sessions_next_hour,1.3288,1.932,48.5285,93.0269,Deep Learning,1.965608,32.4
-LSTM,target_sessions_next_hour,1.3699,2.1174,50.0321,96.3789,Deep Learning,1.965608,30.31
-Prophet,target_sessions_next_hour,1.5271,2.252,55.7718,89.3267,Statistical,1.965608,22.31
-Seasonal 168h,target_sessions_next_hour,1.9656,3.052,,,Baseline,1.965608,0.0
-Naive,target_sessions_next_hour,1.9974,3.0831,,,Baseline,1.965608,-1.62
-Seasonal 24h,target_sessions_next_hour,2.0714,3.2526,,,Baseline,1.965608,-5.38
+Target,Model,MAE,RMSE,WAPE_percent,sMAPE_percent,MAPE_percent,Model_Type,Baseline_MAE,Improvement_over_168h_percent
+target_energy_next_hour,LightGBM,13.3963,20.2387,53.7289,102.5518,,Machine Learning,19.0986,29.86
+target_energy_next_hour,Random Forest,13.4421,19.8707,53.9124,97.7179,,Machine Learning,19.0986,29.62
+target_energy_next_hour,XGBoost,13.9651,19.9024,56.01,98.8741,,Machine Learning,19.0986,26.88
+target_energy_next_hour,LSTM,14.4846,21.252,58.0934,99.3448,,Deep Learning,19.0986,24.16
+target_energy_next_hour,GRU,15.594,22.3693,62.5431,103.9514,,Deep Learning,19.0986,18.35
+target_energy_next_hour,Prophet,17.4688,24.6884,70.0623,104.0776,,Statistical,19.0986,8.53
+target_energy_next_hour,Seasonal 168h,19.0986,30.5963,,,148.88896080529582,Baseline,19.0986,0.0
+target_energy_next_hour,Seasonal 24h,19.7911,30.2714,,,194.93303039935896,Baseline,19.0986,-3.63
+target_energy_next_hour,Naive,22.1165,34.933,,,232.19452367150336,Baseline,19.0986,-15.8
+target_sessions_next_hour,Random Forest,1.2415,1.8406,45.3432,88.9914,,Machine Learning,1.664,25.39
+target_sessions_next_hour,XGBoost,1.2583,1.8234,45.9554,89.5102,,Machine Learning,1.664,24.38
+target_sessions_next_hour,LightGBM,1.2974,1.9831,47.3831,95.0468,,Machine Learning,1.664,22.03
+target_sessions_next_hour,GRU,1.3345,1.8718,48.7365,93.4117,,Deep Learning,1.664,19.81
+target_sessions_next_hour,LSTM,1.4486,2.1382,52.9069,90.6111,,Deep Learning,1.664,12.94
+target_sessions_next_hour,Prophet,1.636,2.3109,59.7496,93.8411,,Statistical,1.664,1.68
+target_sessions_next_hour,Seasonal 168h,1.664,2.6029,,,73.65108404437497,Baseline,1.664,0.0
+target_sessions_next_hour,Seasonal 24h,1.7566,2.834,,,78.85747668136331,Baseline,1.664,-5.56
+target_sessions_next_hour,Naive,1.9974,3.0831,,,88.67983637937368,Baseline,1.664,-20.03

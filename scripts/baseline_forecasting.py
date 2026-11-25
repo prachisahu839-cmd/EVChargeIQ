@@ -105,7 +105,7 @@ mae_naive, rmse_naive, mape_naive = calculate_metrics(
 # Next hour = same hour yesterday
 # ------------------------------------------------------------
 
-seasonal_24_prediction = test_df["sessions_lag_24h"].values
+seasonal_24_prediction = df["session_count"].shift(23).iloc[split_index:].values
 
 mae_24, rmse_24, mape_24 = calculate_metrics(
     actual,
@@ -118,7 +118,7 @@ mae_24, rmse_24, mape_24 = calculate_metrics(
 # Next hour = same hour last week
 # ------------------------------------------------------------
 
-seasonal_168_prediction = test_df["sessions_lag_168h"].values
+seasonal_168_prediction = df["session_count"].shift(167).iloc[split_index:].values
 
 mae_168, rmse_168, mape_168 = calculate_metrics(
     actual,
@@ -196,9 +196,7 @@ mae_energy_naive, rmse_energy_naive, mape_energy_naive = (
 # Model 2 - 24-hour Seasonal Naive
 # ------------------------------------------------------------
 
-seasonal_energy_24_prediction = test_df[
-    "energy_lag_24h"
-].values
+seasonal_energy_24_prediction = df["energy_kWh"].shift(23).iloc[split_index:].values
 
 mae_energy_24, rmse_energy_24, mape_energy_24 = (
     calculate_metrics(
@@ -212,9 +210,7 @@ mae_energy_24, rmse_energy_24, mape_energy_24 = (
 # Model 3 - 7-day Seasonal Naive
 # ------------------------------------------------------------
 
-seasonal_energy_168_prediction = test_df[
-    "energy_lag_168h"
-].values
+seasonal_energy_168_prediction = df["energy_kWh"].shift(167).iloc[split_index:].values
 
 mae_energy_168, rmse_energy_168, mape_energy_168 = (
     calculate_metrics(

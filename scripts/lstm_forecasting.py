@@ -338,19 +338,22 @@ def run_lstm(
         X_sequences = []
         y_sequences = []
 
-        for i in range(
+        # Include the feature row at the forecast origin.
+        # The target at row i represents demand in the following hour,
+        # so the input window must end at row i (not row i - 1).
+        for end in range(
             sequence_length,
-            len(X)
+            len(X) + 1
         ):
 
             X_sequences.append(
                 X[
-                    i - sequence_length:i
+                    end - sequence_length:end
                 ]
             )
 
             y_sequences.append(
-                y[i]
+                y[end - 1]
             )
 
         return (
@@ -378,14 +381,14 @@ def run_lstm(
 
     X_test_combined = np.vstack([
         X_train_scaled[
-            -SEQUENCE_LENGTH:
+            -(SEQUENCE_LENGTH - 1):
         ],
         X_test_scaled
     ])
 
     y_test_combined = np.vstack([
         y_train_scaled[
-            -SEQUENCE_LENGTH:
+            -(SEQUENCE_LENGTH - 1):
         ],
         y_test_scaled
     ])
@@ -528,7 +531,9 @@ def run_lstm(
     # --------------------------------------------------------
 
     prediction_df = pd.DataFrame({
-        "hour": test_data["hour"].values,
+        # Remove timezone metadata while preserving the local clock time.
+        # Direct .values on timezone-aware data can silently convert to UTC.
+        "hour": test_data["hour"].dt.tz_localize(None).to_numpy(),
         "actual": actual,
         "predicted": predictions
     })
